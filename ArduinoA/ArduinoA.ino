@@ -9,6 +9,8 @@
 #define LED_2 11
 #define LED_3 12
 #define LED_4 13
+#define MOTOR1 5
+#define MOTOR2 6
 //#define SWITCH1_PRESSED LOW
 //#define SWITCH2_PRESSED LOW
 //#define SWITCH3_PRESSED LOW
