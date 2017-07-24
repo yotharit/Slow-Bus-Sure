@@ -20,9 +20,9 @@
 #define MOTOR2 5
 short REFLECTOR;
 
-const int xPin = A0;
-const int yPin = A1;
-const int zPin = A2;
+#define xPin A0
+#define yPin A1
+#define zPin A2
 unsigned long mPrevTime, mCurTime;
 
 String tmpWrite = "";
@@ -73,12 +73,12 @@ bool stickdown = false;
 void loop() {
   //เสา
   REFLECTOR = analogRead(REFLEX);
-  Serial.print("Light: ");
+  Serial.print(F("Light: "));
   Serial.println(REFLECTOR);
 
   if (REFLECTOR > 350 && stickdown == false) {
     //เสาลง
-    Serial.println("DOWNNNNN");
+    Serial.println(F("DOWNNNNN"));
     analogWrite(MOTOR1 , 200);
     digitalWrite(MOTOR2 , LOW);
     delay (2000);
@@ -86,21 +86,21 @@ void loop() {
     digitalWrite(MOTOR2 , LOW);
     stickdown = true;
 
-  tmpWrite = "/data/kaoyum/pillar/set/1" ;
-  write();
+    tmpWrite = "/data/kaoyum/pillar/set/1" ;
+    write();
   }
   else if (stickdown == true && REFLECTOR < 350) { //เสาขึ้น
 
-    Serial.println("UPPPPPPP");
+    Serial.println(F("UPPPPPPP"));
     digitalWrite(MOTOR1 , LOW);
     analogWrite(MOTOR2 , 200);
     delay (2000);
     digitalWrite(MOTOR1 , LOW);
     digitalWrite(MOTOR2 , LOW);
     stickdown = false;
-    
-  tmpWrite = "/data/kaoyum/pillar/set/0" ;
-  write();
+
+    tmpWrite = "/data/kaoyum/pillar/set/0" ;
+    write();
   }
 
 
@@ -133,9 +133,9 @@ void loop() {
   }
   vx += gx * (mCurTime - mPrevTime) / 1e6;
   float vtotal = sqrt((vx * vx) + (vy * vy));
-  Serial.print("V= ");
+  Serial.print(F("V= "));
   Serial.println(vtotal);
-//  delay(1000);
+  //  delay(1000);
   mPrevTime = mCurTime;
 
   tmpWrite = "/data/kaoyum/velocity/set/" + String(vtotal);
@@ -185,22 +185,38 @@ void loop() {
   //  else {
   //    Serial.println("OFF");
   //  }
-  if (digitalRead(SWITCH) == 0) {
-    Serial.println("All OPEN");
+  while (digitalRead(SWITCH) == 0) {
+    Serial.println(F("All OPEN"));
     myServoIN.write(150);
     myServoOUT.write(150);
+    if (checkA() < 4) {
+      people++;
+    }
+    if (checkB() < 4) {
+      people--;
+    }
   }
-  else {
+  if(digitalRead(SWITCH) == 1) {
+    if (checkA() < 4) {
+      people++;
+    }
+    if (checkB() < 4) {
+      people--;
+    }
     if (checkA() > 5 ) {
-      Serial.println("IN CLOSE");
+      Serial.println(F("IN CLOSE"));
       myServoIN.write(0);
     }
     if (checkB() > 5 ) {
-      Serial.println("OUT CLOSE");
+      Serial.println(F("OUT CLOSE"));
       myServoOUT.write(0);
     }
   }
 
+  Serial.print(F("PEOPLE: "));
+  Serial.println(people);
+  tmpWrite = "/data/kaoyum/people/set/" + String(people);
+  write();
 }
 
 void write() {
@@ -210,10 +226,7 @@ void write() {
 }
 
 String read() {
-
   data = Ciao.read(CONNECTOR, SERVER_ADDR, tmpRead);
-  //str = " / data / 5910500147 / light / set / qwertyu" ;
-  //Serial.println(str);
   if (data.isEmpty()) {
     Serial.println(F("False"));
   }
@@ -224,7 +237,7 @@ String read() {
 }
 
 long checkA() {
-  long duration, distanceA, distanceB;
+  long duration, distanceA;
   digitalWrite(trigPinA, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPinA, HIGH);
@@ -239,7 +252,7 @@ long checkA() {
   return distanceA;
 }
 long checkB() {
-  long duration, distanceA, distanceB;
+  long duration, distanceB;
   digitalWrite(trigPinB, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPinB, HIGH);

@@ -47,7 +47,7 @@ void loop() {
     analogWrite(BEEZER, 0);
     tmpWrite = "/data/kaoyum/ring/set/0";
     write();
-    delay(500);
+    //delay(500);
   }
 
   short LDR = analogRead(A1);
@@ -71,7 +71,7 @@ void loop() {
     Serial.println(F("Seat 1 Available"));
     write();
   }
-  
+
   if (digitalRead(SWITCH_2) == LOW ) {
     //if (LDR > 500)
     digitalWrite(LED_2, HIGH);
@@ -129,8 +129,6 @@ void write() {
 
 String read() {
   data = Ciao.read(CONNECTOR, SERVER_ADDR, tmpRead);
-  //str = " / data / 5910500147 / light / set / qwertyu" ;
-  //Serial.println(str);
   if (data.isEmpty()) {
     Serial.println(F("False"));
   }
