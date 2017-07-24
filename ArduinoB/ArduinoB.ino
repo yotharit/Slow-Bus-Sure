@@ -5,12 +5,16 @@
 #define REFLEX A3
 #define CONNECTOR "rest"
 #define SERVER_ADDR "158.108.165.223"
-#define SERVO 9
+// A is IN
+// B is OUT
+#define SERVOIN 10
+#define SERVOOUT 9
+
 #define trigPinA 12
 #define echoPinA 11
-#define trigPinB 6
+#define trigPinB 8
 #define echoPinB 7
-#define SWITCH 10
+#define SWITCH 6
 
 #define MOTOR1 3
 #define MOTOR2 5
@@ -27,7 +31,9 @@ String tmpRead = "";
 int people = 0;
 int switchInput;
 
-Servo myServo;
+Servo myServoIN;
+Servo myServoOUT;
+
 boolean isOpen;
 boolean willOpen;
 boolean canClose;
@@ -38,7 +44,10 @@ CiaoData data;
 void setup() {
   Ciao.begin();
   Serial.begin(9600);
-  myServo.attach(SERVO);
+
+  myServoIN.attach(SERVOIN);
+  myServoOUT.attach(SERVOOUT);
+
   pinMode(trigPinA, OUTPUT);
   pinMode(echoPinA, INPUT);
   pinMode(trigPinB, OUTPUT);
@@ -66,7 +75,7 @@ void loop() {
   REFLECTOR = analogRead(REFLEX);
   Serial.print("Light: ");
   Serial.println(REFLECTOR);
-  
+
   if (REFLECTOR > 350 && stickdown == false) {
     //เสาลง
     Serial.println("DOWNNNNN");
@@ -77,6 +86,8 @@ void loop() {
     digitalWrite(MOTOR2 , LOW);
     stickdown = true;
 
+  tmpWrite = "/data/kaoyum/pillar/set/1" ;
+  write();
   }
   else if (stickdown == true && REFLECTOR < 350) { //เสาขึ้น
 
@@ -87,6 +98,9 @@ void loop() {
     digitalWrite(MOTOR1 , LOW);
     digitalWrite(MOTOR2 , LOW);
     stickdown = false;
+    
+  tmpWrite = "/data/kaoyum/pillar/set/0" ;
+  write();
   }
 
 
@@ -119,8 +133,9 @@ void loop() {
   }
   vx += gx * (mCurTime - mPrevTime) / 1e6;
   float vtotal = sqrt((vx * vx) + (vy * vy));
+  Serial.print("V= ");
   Serial.println(vtotal);
-  delay(1000);
+//  delay(1000);
   mPrevTime = mCurTime;
 
   tmpWrite = "/data/kaoyum/velocity/set/" + String(vtotal);
@@ -128,46 +143,64 @@ void loop() {
 
 
   //DOOR
+  ////
+  ////  switchInput = digitalRead(SWITCH);
+  ////
+  ////  if (switchInput == LOW) {
+  ////    start = true;
+  ////    //    if (willOpen) willOpen = false;
+  ////    //    else willOpen = true;
+  ////    willOpen = !willOpen;
+  ////  }
+  //
+  ////  if (start) {
+  //    Serial.println("ON");
+  //    if (!willOpen) { //close
+  //      delay(500);
+  //      if (checkCanClose()) {
+  //        myServo.write(0);
+  //        isOpen = false;
+  //      }
+  //    }
+  //    else { //open
+  //      delay(500);
+  //      myServo.write(150);
+  //
+  //      if (checkA() < 10) {
+  //        people++;
+  //        delay(50);
+  //      }
+  //      else if (checkB() < 20 && people > 0) {
+  //        people--;
+  //        delay(50);
+  //        isOpen = true;
+  //      }
+  //    }
+  //    //  tmpWrite = "/data/5910500147/people/set/" + String(people);
+  //    //  write();
+  //    tmpWrite = "/data/kaoyum/people/set/" + String(people);
+  //    write();
 
-  switchInput = digitalRead(SWITCH);
-
-  if (switchInput == LOW) {
-    start = true;
-    willOpen = !willOpen;
-  }
-
-  if (start) {
-    Serial.println("ON");
-    if (!willOpen) { //close
-      delay(500);
-      if (checkCanClose()) {
-        myServo.write(0);
-        isOpen = false;
-      }
-    }
-    else { //open
-      delay(500);
-      myServo.write(150);
-
-      if (checkA() < 10) {
-        people++;
-        delay(50);
-      }
-      else if (checkB() < 20 && people > 0) {
-        people--;
-        delay(50);
-        isOpen = true;
-      }
-    }
-    //  tmpWrite = "/data/5910500147/people/set/" + String(people);
-    //  write();
-    tmpWrite = "/data/kaoyum/people/set/" + String(people);
-    write();
-
+  //  }
+  //  else {
+  //    Serial.println("OFF");
+  //  }
+  if (digitalRead(SWITCH) == 0) {
+    Serial.println("All OPEN");
+    myServoIN.write(150);
+    myServoOUT.write(150);
   }
   else {
-    Serial.println("OFF");
+    if (checkA() > 5 ) {
+      Serial.println("IN CLOSE");
+      myServoIN.write(0);
+    }
+    if (checkB() > 5 ) {
+      Serial.println("OUT CLOSE");
+      myServoOUT.write(0);
+    }
   }
+
 }
 
 void write() {
