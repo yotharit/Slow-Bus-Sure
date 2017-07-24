@@ -26,15 +26,15 @@ font-family: 'Share', cursive;
 
 
 }
-#container {
+#container2 {
   width: 400px;
   height: 50px;
-  position: relative;
+  /*position: relative;*/
 
 }
 #animate {
   width: 100px;
   height: 50px;
-  position: absolute;
+  /*position: absolute;*/
 
 }

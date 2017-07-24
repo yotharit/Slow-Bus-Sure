@@ -5,30 +5,31 @@ var seat2 = 0;
 var seat3 = 0;
 var seat4 = 0;
 var door = 0;
+var pill1 = 0;
 var pillar = 0;
-var elem = document.getElementById("manyPeople");
+var pill3 = 0;
 var pos = 0;
 
-
-document.getElementById("manyPeople").innerHTML ="13 Peoples in the car"
-
-  var pos = 0;
-  setInterval(frame, 5);
-
-  function frame() {
-    if (pos == 300) {
-      pos = 0;
-       elem.style.right = pos + 'px';
-      elem.style.left = pos + 'px';
-      pos++;
-    } else {
-      pos++;
-      elem.style.right = pos + 'px';
-      elem.style.left = pos + 'px';
-    }
-  }
+// document.getElementById("animate").innerHTML ="panther"
+// console.log(());
+// setInterval(frame, 5);
+//
+// function frame() {
+//   if (pos == 300) {
+//     pos = 0;
+//      elem.style.right = pos + 'px';
+//     elem.style.left = pos + 'px';
+//     pos++;
+//   } else {
+//     pos++;
+//     elem.style.right = pos + 'px';
+//     elem.style.left = pos + 'px';
+//   }
+// }
 
 $(document).ready(function() {
+    $("#manyPeople").text("13 Peoples in the car");
+    // $("#manyPeople").css("left") = '0px';
     if (seat1 === 0) {
         document.getElementById("seat21").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
     } else {
@@ -49,21 +50,33 @@ $(document).ready(function() {
     } else {
         document.getElementById("seat24").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
     }
-    if (pillar1 === 0) {
-        document.getElementById("pillar1").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
-    } else {
-        document.getElementById("pillar1").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
-    }
-    if (pillar2 === 0) {
-        document.getElementById("pillar2").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
-    } else {
-        document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
-    }
-    if (pillar3 === 0) {
-        document.getElementById("pillar3").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
-    } else {
-        document.getElementById("pillar3").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
-    }
+    $('#pillar1').click(function() {
+        if (pill1 === 0) {
+          pill1++;
+            document.getElementById("pillar1").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+        } else {
+          plii1--;
+            document.getElementById("pillar1").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+        }
+    });
+    $('#pillar2').click(function() {
+        if (pillar === 0) {
+          pillar++;
+            document.getElementById("pillar2").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+        } else {
+          pillar--;
+            document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+        }
+    });
+    $('#pillar3').click(function() {
+        if (pillar3 === 0) {
+          pillar3++;
+            document.getElementById("pillar3").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+        } else {
+          pillar--;
+            document.getElementById("pillar3").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+        }
+    });
     $('#bell').click(function() {
         ring++;
         document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
@@ -136,6 +149,37 @@ $(document).ready(function() {
         }).fail(function() {
             console.log("Ring FAIL");
         });
+
+        $.ajax({
+            url: link + "pillar"
+            // url: "file:///Users/panther/Documents/project/busUsers.html"
+        }).done(function() {
+            console.log("Pillar2 SUCCESS");
+            if (pillar === 0) {
+                pillar++;
+                document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:240px'>"
+            } else {
+                pillar--;
+                document.getElementById("pillar2").innerHTML = "<img src='images/pillar.png' style='width:200px;height:240px'>"
+            }
+        }).fail(function() {
+            console.log("Pillar2 FAIL");
+        });
+
+        // pos++;
+        // $("#manyPeople").css("right") = pos + 'px';
+
+        // if (pos == 300) {
+        //   pos = 0;
+        //    elem.style.right = pos + 'px';
+        //   elem.style.left = pos + 'px';
+        //   pos++;
+        // } else {
+        //   pos++;
+        //   elem.style.right = pos + 'px';
+        //   elem.style.left = pos + 'px';
+        // }
+
     }, 2000);
 
 
