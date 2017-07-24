@@ -1,15 +1,142 @@
+var link = "http://158.108.165.223/data/kaoyum/"
+var ring = 0;
+var seat1 = 0;
+var seat2 = 0;
+var seat3 = 0;
+var seat4 = 0;
+var door = 0;
+var pillar = 0;
+var elem = document.getElementById("manyPeople");
+var pos = 0;
+
+
+document.getElementById("manyPeople").innerHTML ="13 Peoples in the car"
+
+  var pos = 0;
+  setInterval(frame, 5);
+
+  function frame() {
+    if (pos == 300) {
+      pos = 0;
+       elem.style.right = pos + 'px';
+      elem.style.left = pos + 'px';
+      pos++;
+    } else {
+      pos++;
+      elem.style.right = pos + 'px';
+      elem.style.left = pos + 'px';
+    }
+  }
+
 $(document).ready(function() {
-    var link = "http://158.108.165.223/data/kaoyum/seat/"
-
-    $('#seat13').click(function(){
-      if(seat1===0){
-        seat1++;
-      }
-      document.getElementById("seat13").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
-
+    if (seat1 === 0) {
+        document.getElementById("seat21").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+    } else {
+        document.getElementById("seat21").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+    }
+    if (seat2 === 0) {
+        document.getElementById("seat22").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+    } else {
+        document.getElementById("seat22").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+    }
+    if (seat3 === 0) {
+        document.getElementById("seat23").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+    } else {
+        document.getElementById("seat23").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+    }
+    if (seat4 === 0) {
+        document.getElementById("seat24").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+    } else {
+        document.getElementById("seat24").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+    }
+    if (pillar1 === 0) {
+        document.getElementById("pillar1").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+    } else {
+        document.getElementById("pillar1").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+    }
+    if (pillar2 === 0) {
+        document.getElementById("pillar2").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+    } else {
+        document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+    }
+    if (pillar3 === 0) {
+        document.getElementById("pillar3").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+    } else {
+        document.getElementById("pillar3").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+    }
+    $('#bell').click(function() {
+        ring++;
+        document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
+        if (ring === 1) {
+            //   document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
+            //   ring--;
+            // }else{
+            //   document.getElementById("bell").innerHTML = "<img src='images/bell.png' style='width:200px;height:240px'>"
+        }
     });
-    $('#bell').click(function(){
-      document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
+
+    $('#seat21').click(function() {
+        if (seat1 === 0) {
+            seat1++;
+            document.getElementById("seat21").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+        } else {
+            seat1--;
+            document.getElementById("seat21").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+        }
     });
+
+
+    setInterval(function() {
+
+        $.ajax({
+            url: link + "seat1"
+            // url: "file:///Users/panther/Documents/project/busUsers.html"
+        }).done(function(data) {
+            console.log(data);
+            console.log("Seat1 SUCCESS");
+        }).fail(function() {
+            console.log("Seat1 FAIL");
+        });
+        $.ajax({
+            url: link + "seat2"
+            // url: "file:///Users/panther/Documents/project/busUsers.html"
+        }).done(function() {
+            console.log("Seat2 SUCCESS");
+        }).fail(function() {
+            console.log("Seat2 FAIL");
+        });
+        $.ajax({
+            url: link + "seat3"
+            // url: "file:///Users/panther/Documents/project/busUsers.html"
+        }).done(function() {
+            console.log("Seat3 SUCCESS");
+        }).fail(function() {
+            console.log("Seat3 FAIL");
+        });
+        $.ajax({
+            url: link + "seat4"
+            // url: "file:///Users/panther/Documents/project/busUsers.html"
+        }).done(function() {
+            console.log("Seat4 SUCCESS");
+        }).fail(function() {
+            console.log("Seat4 FAIL");
+        });
+
+        $.ajax({
+            url: link + "ring"
+            // url: "file:///Users/panther/Documents/project/busUsers.html"
+        }).done(function() {
+            console.log("Ring SUCCESS");
+            if (ring === 1) {
+                document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
+                ring--;
+            } else {
+                document.getElementById("bell").innerHTML = "<img src='images/bell.png' style='width:200px;height:240px'>"
+            }
+        }).fail(function() {
+            console.log("Ring FAIL");
+        });
+    }, 2000);
+
 
 });

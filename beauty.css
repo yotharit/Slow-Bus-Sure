@@ -8,3 +8,33 @@
   font-style: italic;
 
 }
+#frame{
+  background-image: url("images/logo 4.png");
+/*background-size:cover*/
+  background-color: #cccccc;
+background-repeat: no-repeat;
+background-position: center;
+
+height: 100%;
+
+
+}
+#font{
+    font-size: 27px;
+  font-family: 'Dangrek', cursive;
+font-family: 'Share', cursive;
+
+
+}
+#container {
+  width: 400px;
+  height: 50px;
+  position: relative;
+
+}
+#animate {
+  width: 100px;
+  height: 50px;
+  position: absolute;
+
+}
