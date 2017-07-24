@@ -9,6 +9,10 @@ var pill1 = 0;
 var pillar = 0;
 var pill3 = 0;
 var pos = 0;
+var people = 8;
+var manySit = 8;
+
+var valeur=66.64;
 
 // document.getElementById("animate").innerHTML ="panther"
 // console.log(());
@@ -28,7 +32,10 @@ var pos = 0;
 // }
 
 $(document).ready(function() {
-    $("#manyPeople").text("13 Peoples in the car");
+
+    $('#seatBar').css('width', valeur+'%').attr('aria-valuenow', valeur);
+
+    $("#manyPeople").text("8 Peoples in the car");
     // $("#manyPeople").css("left") = '0px';
     if (seat1 === 0) {
         document.getElementById("seat21").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
@@ -50,31 +57,37 @@ $(document).ready(function() {
     } else {
         document.getElementById("seat24").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
     }
+    if (door === 0) {
+        document.getElementById("door").innerHTML = "<img src='images/opened.png' style='width:330px;height:300px'>"
+    } else {
+        document.getElementById("door").innerHTML = "<img src='images/closed.png' style='width:330px;height:300px'>"
+    }
+
     $('#pillar1').click(function() {
         if (pill1 === 0) {
-          pill1++;
-            document.getElementById("pillar1").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+            pill1++;
+            document.getElementById("pillar1").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:240px'>"
         } else {
-          plii1--;
-            document.getElementById("pillar1").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+            pill1--;
+            document.getElementById("pillar1").innerHTML = "<img src='images/pillar.png' style='width:200px;height:240px'>"
         }
     });
     $('#pillar2').click(function() {
         if (pillar === 0) {
-          pillar++;
-            document.getElementById("pillar2").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+            pill2++;
+            document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:240px'>"
         } else {
-          pillar--;
-            document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+            pill2--;
+            document.getElementById("pillar2").innerHTML = "<img src='images/pillar.png' style='width:200px;height:240px'>"
         }
     });
     $('#pillar3').click(function() {
-        if (pillar3 === 0) {
-          pillar3++;
-            document.getElementById("pillar3").innerHTML = "<img src='images/pillar.png' style='width:200px;height:170px'>"
+        if (pill3 === 0) {
+            pill3++;
+            document.getElementById("pillar3").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:240px'>"
         } else {
-          pillar--;
-            document.getElementById("pillar3").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:170px'>"
+            pill3--;
+            document.getElementById("pillar3").innerHTML = "<img src='images/pillar.png' style='width:200px;height:240px'>"
         }
     });
     $('#bell').click(function() {
@@ -100,11 +113,27 @@ $(document).ready(function() {
 
 
     setInterval(function() {
+      var count =0;
+      var seatAvi = 4-count;
+      $.ajax({
+          url: link + "people"
+      }).done(function(data) {
+            $("#manyPeople").text(data + " Peoples in the car");
+          console.log(data);
+          console.log("People SUCCESS");
+      }).fail(function() {
+          console.log("People FAIL");
+      });
 
         $.ajax({
             url: link + "seat1"
             // url: "file:///Users/panther/Documents/project/busUsers.html"
         }).done(function(data) {
+          if(data===1){
+            count++;
+          }else {
+            count--;
+          }
             console.log(data);
             console.log("Seat1 SUCCESS");
         }).fail(function() {
@@ -113,24 +142,50 @@ $(document).ready(function() {
         $.ajax({
             url: link + "seat2"
             // url: "file:///Users/panther/Documents/project/busUsers.html"
-        }).done(function() {
+        }).done(function(data) {
+            console.log(data);
             console.log("Seat2 SUCCESS");
+            if(data===1){
+              count++;
+            }else {
+              count--;
+            }
         }).fail(function() {
             console.log("Seat2 FAIL");
         });
         $.ajax({
             url: link + "seat3"
             // url: "file:///Users/panther/Documents/project/busUsers.html"
-        }).done(function() {
+        }).done(function(data) {
+            console.log(data);
             console.log("Seat3 SUCCESS");
+            if(data===1){
+              count++;
+            }else {
+              count--;
+            }
+            console.log("many people sit");
+            console.log(count);
+              $('#seatBar').css('width', valeur+'%').attr('aria-valuenow', valeur);
+
         }).fail(function() {
             console.log("Seat3 FAIL");
         });
+
+
+
+
         $.ajax({
             url: link + "seat4"
             // url: "file:///Users/panther/Documents/project/busUsers.html"
-        }).done(function() {
+        }).done(function(data) {
+            console.log(data);
             console.log("Seat4 SUCCESS");
+            if(data===1){
+              count++;
+            }else {
+              count--;
+            }
         }).fail(function() {
             console.log("Seat4 FAIL");
         });
@@ -138,7 +193,8 @@ $(document).ready(function() {
         $.ajax({
             url: link + "ring"
             // url: "file:///Users/panther/Documents/project/busUsers.html"
-        }).done(function() {
+        }).done(function(data) {
+            console.log(data);
             console.log("Ring SUCCESS");
             if (ring === 1) {
                 document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
@@ -153,7 +209,8 @@ $(document).ready(function() {
         $.ajax({
             url: link + "pillar"
             // url: "file:///Users/panther/Documents/project/busUsers.html"
-        }).done(function() {
+        }).done(function(data) {
+            console.log(data);
             console.log("Pillar2 SUCCESS");
             if (pillar === 0) {
                 pillar++;
@@ -166,8 +223,25 @@ $(document).ready(function() {
             console.log("Pillar2 FAIL");
         });
 
+        $.ajax({
+            url: link + "door"
+        }).done(function(data) {
+            console.log(data);
+            console.log("Door SUCCESS");
+            if (pillar === 0) {
+                door++;
+                document.getElementById("door").innerHTML = "<img src ='images/opened.png' style='width:330px;height:300px'>"
+            } else {
+                door--;
+                document.getElementById("door").innerHTML = "<img src ='images/closed.png' style='width:330px;height:300px'>"
+            }
+        }).fail(function() {
+            console.log("Door FAIL");
+        });
+
         // pos++;
         // $("#manyPeople").css("right") = pos + 'px';
+
 
         // if (pos == 300) {
         //   pos = 0;
@@ -179,8 +253,24 @@ $(document).ready(function() {
         //   elem.style.right = pos + 'px';
         //   elem.style.left = pos + 'px';
         // }
-
+        myMove();
     }, 2000);
 
+    function myMove() {
+        var elem = $('#manyPeople')
+        var id = setInterval(frame, 6);
+        var pos = 0;
+
+        function frame() {
+            if (pos == 1000) {
+                elem.css({ left: '0px' });
+            } else {
+                pos+= 1;
+                elem.css({
+                    left: pos + 'px'
+                });
+            }
+        }
+    }
 
 });
