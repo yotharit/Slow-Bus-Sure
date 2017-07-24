@@ -12,6 +12,11 @@
 #define echoPinB 7
 #define SWITCH 5
 
+const int xPin = A0;
+const int yPin = A1;
+const int zPin = A2;
+unsigned long mPrevTime, mCurTime;
+
 String tmpWrite = "";
 String tmpRead = "";
 
@@ -37,21 +42,68 @@ void setup() {
   pinMode(SWITCH, INPUT);
   willOpen = false;
   start = false;
+  mPrevTime = micros();
 }
 
+
+inline float calG(int readValue, int rawMin, int rawMax) {
+  float avg = (rawMax + rawMin) / 2;
+  return (readValue - avg) / (rawMax - avg) * 9.8;
+}
+float vx = 0;
+float vy = 0;
+float vz = 0;
+
 void loop() {
+  
+  mCurTime = micros();
+
+  int xRead = analogRead(xPin);
+  int yRead = analogRead(yPin);
+  int zRead = analogRead(zPin);
+  //Serial.println(yRead);
+  //Serial.println(zRead);
+  //delay(100);
+  /*float gz = calG(zRead, 290, 420);
+  if(gz<0.5)
+  {
+    gz = 0;
+  }
+  vz += gz * (mCurTime - mPrevTime) / 1e6;*/
+  float gy = calG(yRead, 290, 421);
+  if(gy>-0.5&&gy<0.5)
+  {
+    gy = 0;
+  }
+  vy += gy * (mCurTime - mPrevTime) / 1e6;
+  float gx = calG(xRead, 283, 426);
+  if(gx>-0.5&&gx<0.5)
+  {
+    gx = 0;
+  }
+  vx += gx * (mCurTime - mPrevTime) / 1e6;
+  float vtotal = sqrt((vx*vx)+(vy*vy));
+  Serial.println(vtotal);
+  delay(1000);
+  mPrevTime = mCurTime;
+
+  tmpWrite = "/data/kaoyum/velocity/set/" + String(vtotal);
+    write();
+
+
+
+  
   switchInput = digitalRead(SWITCH);
-  //  tmpRead = "/data/5910500147/doorm/";
-  //  doorMStatus = read();
 
   if (switchInput == LOW) {
     start = true;
-    if (willOpen) willOpen = false;
-    else willOpen = true;
+    //    if (willOpen) willOpen = false;
+    //    else willOpen = true;
+    willOpen = !willOpen;
   }
 
   if (start) {
-
+    Serial.println("ON");
     if (!willOpen) { //close
       delay(500);
       if (checkCanClose()) {
@@ -71,7 +123,7 @@ void loop() {
           Serial.print("A2: ");
           Serial.println(checkA());
           Serial.print("inwhile: ");
-          delay(500);
+          delay(50);
           if (checkB() < 20) {
             Serial.print("B2: ");
             Serial.println(checkB());
@@ -82,7 +134,7 @@ void loop() {
             break;
           }
         }
-        delay(500);
+        delay(50);
       }
       else if (checkB() < 20 && people > 0) {
         Serial.print("B: ");
@@ -100,7 +152,7 @@ void loop() {
             break;
           }
         }
-        delay(500);
+        delay(50);
         isOpen = true;
       }
     }
@@ -109,6 +161,9 @@ void loop() {
     tmpWrite = "/data/kaoyum/people/set/" + String(people);
     write();
 
+  }
+  else {
+    Serial.println("OFF");
   }
 }
 
