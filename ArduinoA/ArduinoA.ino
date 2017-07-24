@@ -9,23 +9,10 @@
 #define LED_2 11
 #define LED_3 12
 #define LED_4 13
-#define MOTOR1 5
-#define MOTOR2 6
-//#define SWITCH1_PRESSED LOW
-//#define SWITCH2_PRESSED LOW
-//#define SWITCH3_PRESSED LOW
-//#define SWITCH4_PRESSED LOW
 
 #define CONNECTOR "rest"
 #define SERVER_ADDR "158.108.165.223"
 #define BEEZER 3
-
-//boolean isSwitch_1_On;
-//boolean isSwitch_2_On;
-//boolean isSwitch_3_On;
-//boolean isSwitch_4_On;
-
-//int seat[] = {0, 0, 0, 0};
 
 String tmpWrite = "";
 String tmpRead = "";
@@ -46,102 +33,85 @@ void setup() {
   pinMode(SWITCH_4, INPUT);
   pinMode(BEEZER, OUTPUT);
   pinMode(A0, INPUT);
-
+  pinMode(A1, INPUT);
 }
 
 void loop() {
 
-
-
   tmpRead = "/data/kaoyum/ring/";
   ringStatus = read();
   delay(500);
-  //  Serial.println("EGEGEGEGGE");
   if (ringStatus == "1") {
     analogWrite(BEEZER, 5);
     delay(2000);
     analogWrite(BEEZER, 0);
     tmpWrite = "/data/kaoyum/ring/set/0";
     write();
-    delay(500);
+    //delay(500);
   }
 
-
-  short REFLECTOR = analogRead(A1);
-  Serial.println(REFLECTOR);
-
-  //  int light = analogRead(A0);
-  //  Serial.println(ligt);
-  if ((digitalRead(SWITCH_1) == LOW)) {
-    if (REFLECTOR > 500)digitalWrite(LED_1, HIGH);
-    //   digitalWrite(LED_1, HIGH);
-    //   isSwitch_1_On = true;
+  short LDR = analogRead(A1);
+  Serial.println(LDR);
+  if (LDR > 500) {
+    digitalWrite(LED_1, HIGH);
+    digitalWrite(LED_2, HIGH);
+    digitalWrite(LED_3, HIGH);
+    digitalWrite(LED_4, HIGH);
+  }
+  if (digitalRead(SWITCH_1) == LOW) {
+    //if (LDR > 500)
+    digitalWrite(LED_1, HIGH);
     tmpWrite = "/data/kaoyum/seat1/set/1" ;
     Serial.println(F("Seat 1 NOT"));
     write();
-    //  seat[0] = 1;
   }
   else {
-    //   isSwitch_1_On = false;
     digitalWrite(LED_1, LOW);
     tmpWrite = "/data/kaoyum/seat1/set/0" ;
     Serial.println(F("Seat 1 Available"));
     write();
-    //   seat[0] = 0;
   }
 
-  if ((digitalRead(SWITCH_2) == LOW) ) {
-    if (REFLECTOR > 500)digitalWrite(LED_2, HIGH);
-    // digitalWrite(LED_2, HIGH);
-    //   isSwitch_2_On = true;
+  if (digitalRead(SWITCH_2) == LOW ) {
+    //if (LDR > 500)
+    digitalWrite(LED_2, HIGH);
     tmpWrite = "/data/kaoyum/seat2/set/1" ;
     Serial.println(F("Seat 2 NOT"));
     write();
-    //  seat[1] = 1;
   }
   else {
-    //  isSwitch_2_On = false;
     digitalWrite(LED_2, LOW);
     tmpWrite = "/data/kaoyum/seat2/set/0" ;
     Serial.println(F("Seat 2 Available"));
     write();
-    //  seat[1] = 0;
   }
 
-  if ((digitalRead(SWITCH_3) == LOW) ) {
-    if (REFLECTOR > 500)digitalWrite(LED_3, HIGH);
-    //  digitalWrite(LED_3, HIGH);
-    //  isSwitch_3_On = true;
+  if (digitalRead(SWITCH_3) == LOW ) {
+    //  if (LDR > 500)
+    digitalWrite(LED_3, HIGH);
     Serial.println(F("Seat 3 NOT"));
     tmpWrite = "/data/kaoyum/seat3/set/1" ;
     write();
-    //  seat[2] = 1;
   }
   else {
-    //  isSwitch_3_On = false;
     digitalWrite(LED_3, LOW);
     tmpWrite = "/data/kaoyum/seat3/set/0" ;
     Serial.println(F("Seat 3 Available"));
     write();
-    // seat[2] = 0;
   }
 
-  if ((digitalRead(SWITCH_4) == LOW) ) {
-    if (REFLECTOR > 500)digitalWrite(LED_4, HIGH);
-
-    // isSwitch_4_On = true;
+  if (digitalRead(SWITCH_4) == LOW) {
+    //   if (LDR > 500)
+    digitalWrite(LED_4, HIGH);
     tmpWrite = "/data/kaoyum/seat4/set/1" ;
     Serial.println(F("Seat 4 NOT"));
     write();
-    // seat[3] = 1;
   }
   else {
-    //isSwitch_4_On = false;
     digitalWrite(LED_4, LOW);
     tmpWrite = "/data/kaoyum/seat4/set/0" ;
     Serial.println(F("Seat 4 Available"));
     write();
-    //seat[3] = 0;
   }
 
   tmpWrite = "";
@@ -158,10 +128,7 @@ void write() {
 }
 
 String read() {
-
   data = Ciao.read(CONNECTOR, SERVER_ADDR, tmpRead);
-  //str = " / data / 5910500147 / light / set / qwertyu" ;
-  //Serial.println(str);
   if (data.isEmpty()) {
     Serial.println(F("False"));
   }
