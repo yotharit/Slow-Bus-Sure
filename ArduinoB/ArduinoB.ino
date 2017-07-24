@@ -2,15 +2,19 @@
 #include <UnoWiFiDevEd.h>
 #include <Servo.h>
 
-
+#define REFLEX A3
 #define CONNECTOR "rest"
 #define SERVER_ADDR "158.108.165.223"
-#define SERVO 3
+#define SERVO 9
 #define trigPinA 12
 #define echoPinA 11
 #define trigPinB 6
 #define echoPinB 7
-#define SWITCH 5
+#define SWITCH 10
+
+#define MOTOR1 3
+#define MOTOR2 5
+short REFLECTOR;
 
 const int xPin = A0;
 const int yPin = A1;
@@ -43,6 +47,9 @@ void setup() {
   willOpen = false;
   start = false;
   mPrevTime = micros();
+  pinMode(REFLEX, INPUT);
+  pinMode(MOTOR1, OUTPUT);
+  pinMode(MOTOR2, OUTPUT);
 }
 
 
@@ -53,9 +60,38 @@ inline float calG(int readValue, int rawMin, int rawMax) {
 float vx = 0;
 float vy = 0;
 float vz = 0;
-
+bool stickdown = false;
 void loop() {
+  //เสา
+  REFLECTOR = analogRead(REFLEX);
+  Serial.print("Light: ");
+  Serial.println(REFLECTOR);
   
+  if (REFLECTOR > 350 && stickdown == false) {
+    //เสาลง
+    Serial.println("DOWNNNNN");
+    analogWrite(MOTOR1 , 200);
+    digitalWrite(MOTOR2 , LOW);
+    delay (2000);
+    digitalWrite(MOTOR1 , LOW);
+    digitalWrite(MOTOR2 , LOW);
+    stickdown = true;
+
+  }
+  else if (stickdown == true && REFLECTOR < 350) { //เสาขึ้น
+
+    Serial.println("UPPPPPPP");
+    digitalWrite(MOTOR1 , LOW);
+    analogWrite(MOTOR2 , 200);
+    delay (2000);
+    digitalWrite(MOTOR1 , LOW);
+    digitalWrite(MOTOR2 , LOW);
+    stickdown = false;
+  }
+
+
+  //Velocity
+
   mCurTime = micros();
 
   int xRead = analogRead(xPin);
@@ -65,40 +101,38 @@ void loop() {
   //Serial.println(zRead);
   //delay(100);
   /*float gz = calG(zRead, 290, 420);
-  if(gz<0.5)
-  {
+    if(gz<0.5)
+    {
     gz = 0;
-  }
-  vz += gz * (mCurTime - mPrevTime) / 1e6;*/
+    }
+    vz += gz * (mCurTime - mPrevTime) / 1e6;*/
   float gy = calG(yRead, 290, 421);
-  if(gy>-0.5&&gy<0.5)
+  if (gy > -0.5 && gy < 0.5)
   {
     gy = 0;
   }
   vy += gy * (mCurTime - mPrevTime) / 1e6;
   float gx = calG(xRead, 283, 426);
-  if(gx>-0.5&&gx<0.5)
+  if (gx > -0.5 && gx < 0.5)
   {
     gx = 0;
   }
   vx += gx * (mCurTime - mPrevTime) / 1e6;
-  float vtotal = sqrt((vx*vx)+(vy*vy));
+  float vtotal = sqrt((vx * vx) + (vy * vy));
   Serial.println(vtotal);
   delay(1000);
   mPrevTime = mCurTime;
 
   tmpWrite = "/data/kaoyum/velocity/set/" + String(vtotal);
-    write();
+  write();
 
 
+  //DOOR
 
-  
   switchInput = digitalRead(SWITCH);
 
   if (switchInput == LOW) {
     start = true;
-    //    if (willOpen) willOpen = false;
-    //    else willOpen = true;
     willOpen = !willOpen;
   }
 
@@ -116,42 +150,11 @@ void loop() {
       myServo.write(150);
 
       if (checkA() < 10) {
-        Serial.print("A: ");
-        Serial.println(checkA());
-        while (1)
-        {
-          Serial.print("A2: ");
-          Serial.println(checkA());
-          Serial.print("inwhile: ");
-          delay(50);
-          if (checkB() < 20) {
-            Serial.print("B2: ");
-            Serial.println(checkB());
-            people++;
-            Serial.print("People: ");
-            Serial.println(people);
-            Serial.print("out: ");
-            break;
-          }
-        }
+        people++;
         delay(50);
       }
       else if (checkB() < 20 && people > 0) {
-        Serial.print("B: ");
-        Serial.println(checkB());
-        while (1) {
-          Serial.print("inwhile: ");
-          if (checkA() < 10) {
-            //delay(500);
-            Serial.print("A: ");
-            Serial.println(checkA());
-            people--;
-            Serial.print("People: ");
-            Serial.println(people);
-            Serial.print("out: ");
-            break;
-          }
-        }
+        people--;
         delay(50);
         isOpen = true;
       }

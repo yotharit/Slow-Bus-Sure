@@ -67,13 +67,13 @@ void loop() {
   }
 
 
-  short LDR = analogRead(A0);
-  Serial.println(LDR);
+  short REFLECTOR = analogRead(A1);
+  Serial.println(REFLECTOR);
 
   //  int light = analogRead(A0);
   //  Serial.println(ligt);
   if ((digitalRead(SWITCH_1) == LOW)) {
-    if (LDR > 500)digitalWrite(LED_1, HIGH);
+    if (REFLECTOR > 500)digitalWrite(LED_1, HIGH);
     //   digitalWrite(LED_1, HIGH);
     //   isSwitch_1_On = true;
     tmpWrite = "/data/kaoyum/seat1/set/1" ;
@@ -91,7 +91,7 @@ void loop() {
   }
 
   if ((digitalRead(SWITCH_2) == LOW) ) {
-    if (LDR > 500)digitalWrite(LED_2, HIGH);
+    if (REFLECTOR > 500)digitalWrite(LED_2, HIGH);
     // digitalWrite(LED_2, HIGH);
     //   isSwitch_2_On = true;
     tmpWrite = "/data/kaoyum/seat2/set/1" ;
@@ -109,7 +109,7 @@ void loop() {
   }
 
   if ((digitalRead(SWITCH_3) == LOW) ) {
-    if (LDR > 500)digitalWrite(LED_3, HIGH);
+    if (REFLECTOR > 500)digitalWrite(LED_3, HIGH);
     //  digitalWrite(LED_3, HIGH);
     //  isSwitch_3_On = true;
     Serial.println(F("Seat 3 NOT"));
@@ -127,7 +127,7 @@ void loop() {
   }
 
   if ((digitalRead(SWITCH_4) == LOW) ) {
-    if (LDR > 500)digitalWrite(LED_4, HIGH);
+    if (REFLECTOR > 500)digitalWrite(LED_4, HIGH);
 
     // isSwitch_4_On = true;
     tmpWrite = "/data/kaoyum/seat4/set/1" ;
