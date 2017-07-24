@@ -1,0 +1,5 @@
+158.108.165.223/data/kaoyum/ring/
+158.108.165.223/data/kaoyum/seat1
+158.108.165.223/data/kaoyum/seat2
+158.108.165.223/data/kaoyum/seat3
+158.108.165.223/data/kaoyum/seat4
