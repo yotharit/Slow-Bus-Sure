@@ -53,3 +53,9 @@ font-family: 'Share', cursive;
 .margin-zero{
   margin: 0px !important;
 }
+.footer {
+  width:100%;
+  position: absolute;
+   left:0px;
+   bottom:0px;
+}

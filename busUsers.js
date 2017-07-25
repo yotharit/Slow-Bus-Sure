@@ -6,7 +6,7 @@ var seat3 = 0;
 var seat4 = 0;
 var door = 0;
 var pill1 = 0;
-var pillar = 0;
+var pill2 = 0;
 var pill3 = 0;
 var pos = 0;
 var people = 8;
@@ -14,54 +14,7 @@ var manySit = 8;
 
 var valeur=66.64;
 
-// document.getElementById("animate").innerHTML ="panther"
-// console.log(());
-// setInterval(frame, 5);
-//
-// function frame() {
-//   if (pos == 300) {
-//     pos = 0;
-//      elem.style.right = pos + 'px';
-//     elem.style.left = pos + 'px';
-//     pos++;
-//   } else {
-//     pos++;
-//     elem.style.right = pos + 'px';
-//     elem.style.left = pos + 'px';
-//   }
-// }
-
 $(document).ready(function() {
-
-    $('#seatBar').css('width', valeur+'%').attr('aria-valuenow', valeur);
-
-    $("#manyPeople").text("8 Peoples in the car");
-    // $("#manyPeople").css("left") = '0px';
-    if (seat1 === 0) {
-        document.getElementById("seat21").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
-    } else {
-        document.getElementById("seat21").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
-    }
-    if (seat2 === 0) {
-        document.getElementById("seat22").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
-    } else {
-        document.getElementById("seat22").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
-    }
-    if (seat3 === 0) {
-        document.getElementById("seat23").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
-    } else {
-        document.getElementById("seat23").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
-    }
-    if (seat4 === 0) {
-        document.getElementById("seat24").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
-    } else {
-        document.getElementById("seat24").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
-    }
-    if (door === 0) {
-        document.getElementById("door").innerHTML = "<img src='images/opened.png' style='width:330px;height:300px'>"
-    } else {
-        document.getElementById("door").innerHTML = "<img src='images/closed.png' style='width:330px;height:300px'>"
-    }
 
     $('#pillar1').click(function() {
         if (pill1 === 0) {
@@ -73,7 +26,7 @@ $(document).ready(function() {
         }
     });
     $('#pillar2').click(function() {
-        if (pillar === 0) {
+        if (pill2 === 0) {
             pill2++;
             document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:240px'>"
         } else {
@@ -91,26 +44,65 @@ $(document).ready(function() {
         }
     });
     $('#bell').click(function() {
-        ring++;
-        document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
-        if (ring === 1) {
-            //   document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
-            //   ring--;
-            // }else{
-            //   document.getElementById("bell").innerHTML = "<img src='images/bell.png' style='width:200px;height:240px'>"
+
+        if (ring == 0) {
+            document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
+            $.ajax({
+                url: "http://158.108.165.223/data/kaoyum/ring/set/1"
+            });
+            ring = 1;
         }
     });
 
-    $('#seat21').click(function() {
-        if (seat1 === 0) {
-            seat1++;
-            document.getElementById("seat21").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
-        } else {
-            seat1--;
-            document.getElementById("seat21").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
-        }
-    });
+    // $('#seat21').click(function() {
+    //     if (seat1 === 0) {
+    //         seat1++;
+    //         document.getElementById("seat21").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+    //     } else {
+    //         seat1--;
+    //         document.getElementById("seat21").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+    //     }
+    // });
+    // $('#seat22').click(function() {
+    //     if (seat2 === 0) {
+    //         seat2++;
+    //         document.getElementById("seat22").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+    //     } else {
+    //         seat2--;
+    //         document.getElementById("seat22").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+    //     }
+    // });
+    // $('#seat23').click(function() {
+    //     if (seat3 === 0) {
+    //         seat3++;
+    //         document.getElementById("seat23").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+    //     } else {
+    //         seat1--;
+    //         document.getElementById("seat23").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+    //     }
+    // });
+    // $('#seat24').click(function() {
+    //     if (seat4 === 0) {
+    //         seat4++;
+    //         document.getElementById("seat24").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+    //     } else {
+    //         seat4--;
+    //         document.getElementById("seat24").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+    //     }
+    // });
 
+    $('#door').click(function() {
+      if (door == 0) {
+          document.getElementById('door').innerHTML = "<img src='images/opened.png' style='width:330px;height:300px'>"
+          $.ajax({
+              url: "http://158.108.165.223/data/kaoyum/doorin/set/1"
+          });
+          $.ajax({
+              url: "http://158.108.165.223/data/kaoyum/doorout/set/1"
+          });
+          door = 1;
+      }
+    })
 
     setInterval(function() {
       var count =0;
@@ -118,7 +110,20 @@ $(document).ready(function() {
       $.ajax({
           url: link + "people"
       }).done(function(data) {
-            $("#manyPeople").text(data + " Peoples in the car");
+          $("#manyPeople").text((parseInt(data)+4) + " Peoples in the car");
+          console.log("Seat Bar " + $('#seatBar').val());
+          $('#seatBar').removeClass("progress-bar-success");
+          $('#seatBar').removeClass("progress-bar-warning");
+          $('#seatBar').removeClass("progress-bar-danger");
+          if((data*5)+20 <= 40) {
+            $('#seatBar').addClass("progress-bar-success");
+          }else if((data*5)+20 <= 70) {
+            $('#seatBar').addClass("progress-bar-warning");
+          }else {
+            $('#seatBar').addClass("progress-bar-danger");
+          }
+          $('#seatBar h6').text( ((data*5)+20)+ "% People in the car");
+          $('#seatBar').css('width', ((data*5)+20)+'%').attr('aria-valuenow', (data*5)+20);
           console.log(data);
           console.log("People SUCCESS");
       }).fail(function() {
@@ -126,79 +131,96 @@ $(document).ready(function() {
       });
 
         $.ajax({
-            url: link + "seat1"
-            // url: "file:///Users/panther/Documents/project/busUsers.html"
+            // url: link + "seat1"
+            url: "http://158.108.165.223/data/kaoyum/seat1"
         }).done(function(data) {
-          if(data===1){
-            count++;
-          }else {
-            count--;
+          if (data == 0) {
+              document.getElementById("seat21").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+          } else {
+            document.getElementById("seat21").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
           }
+          // if(data===1){
+          //   count++;
+          // }else {
+          //   count--;
+          // }
             console.log(data);
             console.log("Seat1 SUCCESS");
         }).fail(function() {
             console.log("Seat1 FAIL");
         });
         $.ajax({
-            url: link + "seat2"
-            // url: "file:///Users/panther/Documents/project/busUsers.html"
+            // url: link + "seat2"
+            url: "http://158.108.165.223/data/kaoyum/seat2"
         }).done(function(data) {
-            console.log(data);
+          if (data == 0) {
+              document.getElementById("seat22").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+          } else {
+            document.getElementById("seat22").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+          }
+          // if(data===1){
+          //   count++;
+          // }else {
+          //   count--;
+          // }
+            console.log("asdokasdaskd"+data);
             console.log("Seat2 SUCCESS");
-            if(data===1){
-              count++;
-            }else {
-              count--;
-            }
         }).fail(function() {
             console.log("Seat2 FAIL");
         });
+
         $.ajax({
-            url: link + "seat3"
-            // url: "file:///Users/panther/Documents/project/busUsers.html"
+            // url: link + "seat3"
+            url: "http://158.108.165.223/data/kaoyum/seat3"
         }).done(function(data) {
+          if (data == 0) {
+              document.getElementById("seat23").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+          } else {
+            document.getElementById("seat23").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+          }
+          // if(data===1){
+          //   count++;
+          // }else {
+          //   count--;
+          // }
             console.log(data);
             console.log("Seat3 SUCCESS");
-            if(data===1){
-              count++;
-            }else {
-              count--;
-            }
-            console.log("many people sit");
-            console.log(count);
-              $('#seatBar').css('width', valeur+'%').attr('aria-valuenow', valeur);
-
         }).fail(function() {
             console.log("Seat3 FAIL");
         });
 
-
-
-
         $.ajax({
-            url: link + "seat4"
-            // url: "file:///Users/panther/Documents/project/busUsers.html"
+            // url: link + "seat4"
+            url: "http://158.108.165.223/data/kaoyum/seat4"
         }).done(function(data) {
+          if (data == 0) {
+            document.getElementById("seat24").innerHTML = "<img src='images/seatAvi.png' style='width:200px;height:170px'>"
+          } else {
+            document.getElementById("seat24").innerHTML = "<img src='images/seatFull.png' style='width:200px;height:170px'>"
+          }
+          // if(data===1){
+          //   count++;
+          // }else {
+          //   count--;
+          // }
             console.log(data);
             console.log("Seat4 SUCCESS");
-            if(data===1){
-              count++;
-            }else {
-              count--;
-            }
+            console.log("many people sit");
+            console.log(count);
+            // $('#seatBar').css('width', valeur+( count*8.33)'%').attr('aria-valuenow', valeur);
         }).fail(function() {
             console.log("Seat4 FAIL");
         });
 
+
         $.ajax({
             url: link + "ring"
-            // url: "file:///Users/panther/Documents/project/busUsers.html"
         }).done(function(data) {
             console.log(data);
             console.log("Ring SUCCESS");
-            if (ring === 1) {
+            if (data == 1) {
                 document.getElementById("bell").innerHTML = "<img src='images/bellDingDing.png' style='width:200px;height:240px'>"
-                ring--;
+                ring = 0;
             } else {
                 document.getElementById("bell").innerHTML = "<img src='images/bell.png' style='width:200px;height:240px'>"
             }
@@ -207,70 +229,49 @@ $(document).ready(function() {
         });
 
         $.ajax({
-            url: link + "pillar"
-            // url: "file:///Users/panther/Documents/project/busUsers.html"
+            // url: link + "pillar"
+            url: "http://158.108.165.223/data/kaoyum/pillar"
+            // http://158.108.165.223/data/kaoyum/pillar
         }).done(function(data) {
             console.log(data);
             console.log("Pillar2 SUCCESS");
-            if (pillar === 0) {
-                pillar++;
-                document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:240px'>"
-            } else {
-                pillar--;
+            if (data == 0) {
                 document.getElementById("pillar2").innerHTML = "<img src='images/pillar.png' style='width:200px;height:240px'>"
+            } else {
+                document.getElementById("pillar2").innerHTML = "<img src='images/pillarFull.png' style='width:200px;height:240px'>"
             }
         }).fail(function() {
             console.log("Pillar2 FAIL");
         });
-
         $.ajax({
-            url: link + "door"
+            url: link + "doorin"
         }).done(function(data) {
             console.log(data);
             console.log("Door SUCCESS");
-            if (pillar === 0) {
-                door++;
-                document.getElementById("door").innerHTML = "<img src ='images/opened.png' style='width:330px;height:300px'>"
+            if (data == 0) {
+                document.getElementById("door").innerHTML = "<img src ='images/closed.png' style='width:260px;height:240px'>"
+                door = 1 ;
             } else {
-                door--;
-                document.getElementById("door").innerHTML = "<img src ='images/closed.png' style='width:330px;height:300px'>"
+                document.getElementById("door").innerHTML = "<img src ='images/opened.png' style='width:260px;height:240px'>"
             }
         }).fail(function() {
             console.log("Door FAIL");
         });
 
-        // pos++;
-        // $("#manyPeople").css("right") = pos + 'px';
-
-
-        // if (pos == 300) {
-        //   pos = 0;
-        //    elem.style.right = pos + 'px';
-        //   elem.style.left = pos + 'px';
-        //   pos++;
-        // } else {
-        //   pos++;
-        //   elem.style.right = pos + 'px';
-        //   elem.style.left = pos + 'px';
-        // }
-        myMove();
     }, 2000);
 
-    function myMove() {
+      setInterval( function() {
         var elem = $('#manyPeople')
-        var id = setInterval(frame, 6);
-        var pos = 0;
-
-        function frame() {
-            if (pos == 1000) {
-                elem.css({ left: '0px' });
-            } else {
-                pos+= 1;
-                elem.css({
-                    left: pos + 'px'
-                });
-            }
+        if (pos >=460) {
+          pos=0;
+        } else {
+            pos+= 0.5;
+            elem.css({
+                left: pos + 'px'
+            });
         }
-    }
+      },4)
+
+
 
 });
