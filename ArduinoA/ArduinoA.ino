@@ -1,18 +1,18 @@
 #include <Wire.h>
 #include <UnoWiFiDevEd.h>
 
-#define SWITCH_1 2
-#define SWITCH_2 4
-#define SWITCH_3 7
-#define SWITCH_4 8
-#define LED_1 10
-#define LED_2 11
-#define LED_3 12
-#define LED_4 13
+#define SWITCH_1 2 //
+#define SWITCH_2 4 // 
+#define SWITCH_3 7 // 
+#define SWITCH_4 8 //
+#define LED_1 10//
+#define LED_2 11//
+#define LED_3 12//
+#define LED_4 13//
 
 #define CONNECTOR "rest"
 #define SERVER_ADDR "158.108.165.223"
-#define BEEZER 3
+#define BEEZER 3//
 
 String tmpWrite = "";
 String tmpRead = "";
@@ -42,8 +42,8 @@ void loop() {
   ringStatus = read();
   delay(500);
   if (ringStatus == "1") {
-    analogWrite(BEEZER, 5);
-    delay(2000);
+    analogWrite(BEEZER, 30);
+    delay(3000);
     analogWrite(BEEZER, 0);
     tmpWrite = "/data/kaoyum/ring/set/0";
     write();
@@ -66,7 +66,7 @@ void loop() {
     write();
   }
   else {
-    digitalWrite(LED_1, LOW);
+    if (LDR < 500)digitalWrite(LED_1, LOW);
     tmpWrite = "/data/kaoyum/seat1/set/0" ;
     Serial.println(F("Seat 1 Available"));
     write();
@@ -80,7 +80,7 @@ void loop() {
     write();
   }
   else {
-    digitalWrite(LED_2, LOW);
+    if (LDR < 500) digitalWrite(LED_2, LOW);
     tmpWrite = "/data/kaoyum/seat2/set/0" ;
     Serial.println(F("Seat 2 Available"));
     write();
@@ -94,7 +94,7 @@ void loop() {
     write();
   }
   else {
-    digitalWrite(LED_3, LOW);
+    if (LDR < 500)digitalWrite(LED_3, LOW);
     tmpWrite = "/data/kaoyum/seat3/set/0" ;
     Serial.println(F("Seat 3 Available"));
     write();
@@ -108,7 +108,7 @@ void loop() {
     write();
   }
   else {
-    digitalWrite(LED_4, LOW);
+    if (LDR < 500) digitalWrite(LED_4, LOW);
     tmpWrite = "/data/kaoyum/seat4/set/0" ;
     Serial.println(F("Seat 4 Available"));
     write();

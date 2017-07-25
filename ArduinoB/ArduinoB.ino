@@ -2,6 +2,12 @@
 #include <UnoWiFiDevEd.h>
 #include <Servo.h>
 
+
+
+// untest เสา velo
+
+
+
 #define REFLEX A3
 #define CONNECTOR "rest"
 #define SERVER_ADDR "158.108.165.223"
@@ -38,6 +44,8 @@ boolean isOpen;
 boolean willOpen;
 boolean canClose;
 boolean start;
+bool OpenIN = false;
+bool OpenOUT = false;
 
 CiaoData data;
 
@@ -47,12 +55,14 @@ void setup() {
 
   myServoIN.attach(SERVOIN);
   myServoOUT.attach(SERVOOUT);
-
+  myServoOUT.write(180);
+  myServoIN.write(180);
   pinMode(trigPinA, OUTPUT);
   pinMode(echoPinA, INPUT);
   pinMode(trigPinB, OUTPUT);
   pinMode(echoPinB, INPUT);
   pinMode(SWITCH, INPUT);
+
   willOpen = false;
   start = false;
   mPrevTime = micros();
@@ -81,7 +91,7 @@ void loop() {
     Serial.println(F("DOWNNNNN"));
     analogWrite(MOTOR1 , 200);
     digitalWrite(MOTOR2 , LOW);
-    delay (2000);
+    delay (5000);
     digitalWrite(MOTOR1 , LOW);
     digitalWrite(MOTOR2 , LOW);
     stickdown = true;
@@ -92,9 +102,10 @@ void loop() {
   else if (stickdown == true && REFLECTOR < 350) { //เสาขึ้น
 
     Serial.println(F("UPPPPPPP"));
-    digitalWrite(MOTOR1 , LOW);
     analogWrite(MOTOR2 , 200);
-    delay (2000);
+    digitalWrite(MOTOR1 , LOW);
+    
+    delay (5000);
     digitalWrite(MOTOR1 , LOW);
     digitalWrite(MOTOR2 , LOW);
     stickdown = false;
@@ -121,19 +132,19 @@ void loop() {
     }
     vz += gz * (mCurTime - mPrevTime) / 1e6;*/
   float gy = calG(yRead, 290, 421);
-  if (gy > -0.5 && gy < 0.5)
+  if (gy >= -1 && gy <= 1)
   {
     gy = 0;
   }
-  vy += gy * (mCurTime - mPrevTime) / 1e6;
+  vy = gy * (mCurTime - mPrevTime) / 1e6;
   float gx = calG(xRead, 283, 426);
-  if (gx > -0.5 && gx < 0.5)
+  if (gx >= -1 && gx <= 1)
   {
     gx = 0;
   }
-  vx += gx * (mCurTime - mPrevTime) / 1e6;
+  vx = gx * (mCurTime - mPrevTime) / 1e6;
   float vtotal = sqrt((vx * vx) + (vy * vy));
-  Serial.print(F("V= "));
+  Serial.print(F("Velo= "));
   Serial.println(vtotal);
   //  delay(1000);
   mPrevTime = mCurTime;
@@ -185,31 +196,57 @@ void loop() {
   //  else {
   //    Serial.println("OFF");
   //  }
-  while (digitalRead(SWITCH) == 0) {
+  // tmpRead = "/data/kaoyum/doorout/";
+  // if (read() == "1" || digitalRead(SWITCH) == 0 )
+  // {
+  //    tmpRead = "/data/kaoyum/doorin/";
+  while (digitalRead(SWITCH) == 0/*  || read() == "1" */) {
     Serial.println(F("All OPEN"));
-    myServoIN.write(150);
-    myServoOUT.write(150);
-    if (checkA() < 4) {
+    OpenIN = true;
+    OpenOUT = true;
+
+    // tmpRead = "/data/kaoyum/doorin/";
+    //if (read() == "1")
+    myServoIN.write(80);
+    //tmpRead = "/data/kaoyum/doorout/";
+    // if (read() == "1")
+    myServoOUT.write(50);
+
+    if (checkA() < 10) {
       people++;
     }
-    if (checkB() < 4) {
-      people--;
+    if (checkB() < 5) {
+      if (people > 0)people--;
     }
+    delay(1000);
+    tmpWrite = "/data/kaoyum/doorin/set/1";
+    write();
+    tmpWrite = "/data/kaoyum/doorout/set/1";
+    write();
   }
-  if(digitalRead(SWITCH) == 1) {
-    if (checkA() < 4) {
+  // read();
+  // }
+  if (digitalRead(SWITCH) == 1) {
+    if (checkA() < 10 && OpenIN == true) {
       people++;
     }
-    if (checkB() < 4) {
-      people--;
+    if (checkB() < 5 && OpenOUT == true) {
+      if (people > 0) people--;
+
     }
-    if (checkA() > 5 ) {
+    if (checkA() > 10 ) {
       Serial.println(F("IN CLOSE"));
-      myServoIN.write(0);
+      myServoIN.write(180);
+      OpenIN = false;
+      tmpWrite = "/data/kaoyum/doorin/set/0";
+      write();
     }
-    if (checkB() > 5 ) {
+    if (checkB() > 3 ) {
       Serial.println(F("OUT CLOSE"));
-      myServoOUT.write(0);
+      myServoOUT.write(180);
+      OpenOUT = false;
+      tmpWrite = "/data/kaoyum/doorout/set/0";
+      write();
     }
   }
 
@@ -231,6 +268,7 @@ String read() {
     Serial.println(F("False"));
   }
   else {
+    Serial.print(F("READ: "));
     Serial.println(String(data.get(2)));
     return String(data.get(2));
   }
