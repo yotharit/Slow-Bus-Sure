@@ -2,26 +2,94 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>test
-    </title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script type="text/javascript">
-    var link = "http://158.108.165.223/data/kaoyum/"
-
-      setInterval(function() {
-        $.ajax({
-            url: link + "seat1"
-        }).done(function(data) {
-          console.log(data);
-            console.log("Seat1 SUCCESS");
-        }).fail(function() {
-            console.log("Seat1 FAIL");
-        });
-      });
-    </script>
+    <title>fasdf</title>
+    <style>
+    body {background-color:#1d1f20;}</style>
   </head>
   <body>
+    <canvas id="canvas" width="500" height="300"/>
 
+    <script>
+    //////////////// Arranque //
+function init() {
+    setInterval(draw,30);
+}
+
+//////////////// Variáveis // Valores aqui!
+
+var valores = [100,200,300,400,200,190,230,220,170,150,73,54,240,214,210,240,214,210,92,2,213,125,126,214,214,123];
+var pontos = [];
+var diferenca =[];
+
+
+function drawGrid(width,height,colun,line) {
+var ctx = document.getElementById('canvas').getContext('2d');
+    ctx.fillRect(0,0,width,height);
+    ctx.save();
+    for (var c=1; c<(width/colun); c++) {
+        ctx.beginPath();
+        ctx.moveTo(c*colun,0);
+        ctx.lineTo(c*colun,height);
+        ctx.stroke();
+    }
+    for (var l=1; l<(height/line); l++) {
+        ctx.beginPath();
+        ctx.moveTo(0,l*line);
+        ctx.lineTo(width, l*line);
+        ctx.stroke();
+    }
+}
+
+function drawingLines (width,points,c) {
+var ctx = document.getElementById('canvas').getContext('2d');
+ctx.beginPath();
+ctx.globalAlpha = c*0.04;
+ctx.moveTo(((c-1)*width+10),points[c-1]);
+ctx.lineTo(c*width+10,points[c]);
+ctx.lineTo(c*width+10,300);
+ctx.lineTo(((c-1)*width+10),300);
+ctx.lineTo(((c-1)*width+10),points[c-1]);
+ctx.fill();
+ctx.beginPath();
+ ctx.globalAlpha = 1;
+ctx.moveTo(((c-1)*width+10),points[c-1]);
+ctx.lineTo(c*width+10,points[c]);
+ctx.stroke();
+ctx.beginPath();
+ctx.save();
+ctx.fillStyle=ctx.strokeStyle;
+ctx.arc(c*width+10,points[c],3,0,Math.PI*2)
+ctx.fill();
+ctx.restore();
+}
+
+
+function draw() {
+var ctx = document.getElementById('canvas').getContext('2d');
+
+//////////////// setupBackground
+ctx.fillStyle ="#1d1f20";
+ctx.strokeStyle ="#333";
+ctx.save();
+drawGrid(1000,300,1000,1000);
+
+
+for (var c=0; c<valores.length; c++) {
+    if(isNaN(pontos[c])){
+    pontos[c]=300;
+}
+ctx.lineWidth=1.4;
+larg=480/(valores.length -1);
+diferenca[c]=(300-valores[c])-pontos[c];
+pontos[c]+=diferenca[c]/(c+1);
+
+//////////////// setupGraphic
+ctx.strokeStyle ="#0ff";
+ctx.fillStyle="#0ff";
+drawingLines (larg,pontos,c);
+}
+}
+window.onload = init();
+    </script>
   </body>
 </html>

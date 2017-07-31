@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>ADMIN-SlowBusSure</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+  <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="js/epoch.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/epoch.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="passenger.css" />
+  <script src="passenger.js"></script>
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <script src="dashboard.js" charset="utf-8"></script>
+
+
+
+</head>
+
+<body>
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <img src="logo.png" alt="" id="logo">
+    <a href="file:///Users/tharitpongsaneh/Desktop/SLOW-BUS-SURE/driver.html" class="menu">Driver Statistic</a>
+    <a href="file:///Users/tharitpongsaneh/Desktop/SLOW-BUS-SURE/bus-stop.html" class="menu">Stop Statistic</a>
+    <a href="file:///Users/tharitpongsaneh/Desktop/SLOW-BUS-SURE/Passenger.html" class="menu">Passenger Statistic</a>
+
+  </div>
+
+  <div class="middle">
+    <!-- Use any element to open the sidenav -->
+    <span onclick="openNav()">
+    <img src="ham.jpg" alt="" id="navButtonLogo">
+  </span>
+    <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+    <div class="main-full" id="main">
+      <!-- data -->
+      <div class="row">
+        <div class="col-md-4">
+          <img src="passenger.png" alt="" class="pageLogo">
+        </div>
+        <div class="col-md-8" id="Chart">
+          <div id="chartContainer" style="height: 300px; width: 80;">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <p class="Tag">PASSENGER-Live</p>
+          <div id="barChart" class="epoch category10" style="width: 100%; height: 200px"></div>
+        </div>
+        <div class="col-md-7" id="hourGraph">
+          <p class="Tag">TIME-Stat</p>
+          <div class="ct-chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
